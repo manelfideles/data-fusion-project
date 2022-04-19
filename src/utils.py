@@ -2,7 +2,7 @@ import numpy as np
 from math import sqrt, cos, sin, ceil
 from scipy.linalg import sqrtm
 
-"""
+
 # Globals
 # Estimation params for EKF
 Q = np.diag([0.1, 0.1, np.deg2rad(1.0), 1.0]) ** 2
@@ -19,7 +19,6 @@ sim_time = 50.0
 ALPHA = 0.001
 BETA = 2
 KAPPA = 0
-"""
 
 
 def u(v=1.0, yaw=0.1):
@@ -51,6 +50,9 @@ def mm(x, u, dt=0.1):
 def observation(x, xdr, u):
     x = mm(x, u)
 
+    gps_noise = np.diag([0.5, 0.5]) ** 2
+    input_noise = np.diag([1.0, np.deg2rad(30.0)]) ** 2
+
     # add noise to gps x-y
     zx = x[0, 0] + np.random.randn() * gps_noise[0, 0]
     zy = x[1, 0] + np.random.randn() * gps_noise[1, 1]
@@ -66,9 +68,11 @@ def observation(x, xdr, u):
     return x, z, xdr, ud
 
 
-"""
-def observation(x, xdr, u):
+def observation2(x, xdr, u):
     x = mm(x, u)
+
+    gps_noise = np.diag([0.5, 0.5]) ** 2
+    input_noise = np.diag([1.0, np.deg2rad(30.0)]) ** 2
 
     # add noise to gps x-y
     z = om(x) + gps_noise.dot(np.random.randn(2, 1))
@@ -79,7 +83,6 @@ def observation(x, xdr, u):
     xdr = mm(xdr, ud)
 
     return x, z, xdr, ud
-"""
 
 
 def jF(x, u):

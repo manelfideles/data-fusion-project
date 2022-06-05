@@ -11,3 +11,5 @@ root
   --> src
         Localização do código-base utilizado
         para elaborar o relatório.
+        O relatório encontra-se no notebook
+        main.ipynb
